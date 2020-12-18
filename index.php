@@ -1,39 +1,17 @@
 <?php
 include 'functions/utility-functions.php';
+include 'functions/names-functions.php';
+
 $fileName = 'names-short-list.txt';
-
-$lineNumber = 0;
-
-// Load up the array
-$FH = fopen("$fileName", "r");
-$nextName = fgets($FH);
-
-while(!feof($FH)) {
-    if($lineNumber % 2 == 0) {
-        $fullNames[] = trim(substr($nextName, 0, strpos($nextName, " --")));
-    }
-
-$lineNumber++;
-$nextName = fgets($FH);
-}
+$fullNames = load_full_names($fileName);
+$firstNames = load_first_names($fullNames);
+$lastNames = load_last_names($fullNames);
 
 // $findMe = ',';
 // echo $fullNames[0] . '<br>';
 // echo strpos($fullNames[0], $findMe) . '<br>';
 // echo substr($fullNames[0], 0, strpos($fullNames[0], $findMe));
 // exit();
-
-// Get all first names
-foreach($fullNames as $fullName) {
-    $startHere = strpos($fullName, ",") + 1;
-    $firstNames[] = trim(substr($fullName, $startHere));
-}
-
-// Get all last names
- foreach ($fullNames as $fullName) {
-     $stopHere = strpos($fullName, ",");
-     $lastNames[] = substr($fullName, 0, $stopHere);
- }
 
 // Get valid names
 for($i = 0; $i < sizeof($fullNames); $i++) {
@@ -72,13 +50,38 @@ echo '<ul style="list-style-type:none">';
     foreach($uniqueValidNames as $uniqueValidNames) {
         echo "<li>$uniqueValidNames</li>";
     }
+echo "</ul>";
 
+echo '<h2>Unique Last Names</h2>';
+$uniqueValidLastNames = (array_unique($validLastNames));
+echo ("<p>There are " . sizeof($uniqueValidLastNames) . " Unique last names</p>");
+echo '<ul style="list-style-type:none">';    
+    foreach($uniqueValidLastNames as $uniqueValidLastNames) {
+        echo "<li>$uniqueValidLastNames</li>";
+    }
+echo "</ul>";
+
+echo '<h2>Unique First Names</h2>';
+$uniqueValidFirstNames = (array_unique($validFirstNames));
+echo ("<p>There are " . sizeof($uniqueValidFirstNames) . " Unique first names</p>");
+echo '<ul style="list-style-type:none">';    
+    foreach($uniqueValidFirstNames as $uniqueValidFirstNames) {
+        echo "<li>$uniqueValidFirstNames</li>";
+    }
+echo "</ul>";
+
+echo '<h2>Ten Most Common Last Names</h2>';
+$commonValidLastNames = (array_count_values($validLastNames));
+echo '<ul style="list-style-type:none">';    
+    foreach($commonValidLastNames as $commonValidLastNames) {
+        echo "<li>$commonValidLastNames</li>";
+    }
+echo "</ul>";
+
+echo '<h2>Ten Most Common First Names</h2>';
+$commonValidFirstNames = (array_count_values($validFirstNames));
+echo '<ul style="list-style-type:none">';    
+    foreach($commonValidFirstNames as $commonValidFirstNames) {
+        echo "<li>$commonValidFirstNames</li>";
+    }
 ?>
-
-
-
-
-
-
-
-
